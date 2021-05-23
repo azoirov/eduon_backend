@@ -1,0 +1,36 @@
+const SignUpValidation = require("../validations/SignUpValidation");
+const { generateHash } = require("../modules/bcrypt");
+
+module.exports = async (req, res) => {
+  try {
+    const { phone_number, full_name, age, password } =
+      await SignUpValidation.validateAsync(req.body);
+
+    let user = await req.psql.users.create({
+      name: full_name,
+      phone_number,
+      age,
+      password: await generateHash(password),
+    });
+
+    console.log(user);
+
+    user = {
+      id: user.user_id,
+      full_name: user.name,
+      phone_number: user.phone_number,
+      age: user.age,
+    };
+
+    res.status(200).json({
+      ok: true,
+      message: "successfully signed up",
+      data: user,
+    });
+  } catch (e) {
+    res.status(400).json({
+      ok: false,
+      message: e + "",
+    });
+  }
+};

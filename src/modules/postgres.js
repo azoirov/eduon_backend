@@ -5,6 +5,7 @@ const CategoryModel = require("../models/CategoryModel");
 const CommentModel = require("../models/CommentModel");
 const LessonModel = require("../models/LessonModel");
 const CourseModel = require("../models/CourseModel");
+const SessionsModel = require("../models/SessionsModel");
 
 const sequelize = new Sequelize(CONNECTION_STRING, {
   logging: (msg) => console.log("SQL: ", msg),
@@ -28,8 +29,19 @@ async function main() {
     db.comments = await CommentModel(Sequelize, sequelize);
     db.courses = await CourseModel(Sequelize, sequelize);
     db.lessons = await LessonModel(Sequelize, sequelize);
+    db.sessions = await SessionsModel(Sequelize, sequelize);
 
     // References
+
+    db.users.hasMany(db.sessions, {
+      foreign_key: "user_id",
+      allowNull: false,
+    });
+
+    db.sessions.belongsTo(db.users, {
+      foreign_key: "user_id",
+      allowNull: false,
+    });
 
     db.users.hasMany(db.comments, {
       foreign_key: "user_id",
@@ -73,7 +85,9 @@ async function main() {
 
     // Sync
 
-    sequelize.sync({ force: true });
+    sequelize.sync({ force: false });
+
+    return db;
   } catch (e) {
     console.log(`SQL ERROR: `, e);
   }

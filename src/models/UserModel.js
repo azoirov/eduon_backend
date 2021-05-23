@@ -17,5 +17,9 @@ module.exports = async (Sequelize, sequelize) => {
       type: Sequelize.DataTypes.BIGINT,
       allowNull: false,
     },
+    password: {
+      type: Sequelize.DataTypes.STRING(64),
+      allowNull: false,
+    },
   });
 };
