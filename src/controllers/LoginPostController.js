@@ -26,13 +26,17 @@ module.exports = async (req, res) => {
 
     if (!(useragent && ip)) throw new Error("Invalid request");
 
-    let { session_id } = await req.psql.sessions.create({
+    let session = await req.psql.sessions.create({
       user_id: user.user_id,
       ip_address: ip,
       user_agent: useragent,
     });
 
+    let { session_id } = session;
+
     let token = generateJWTToken({ session_id });
+
+    req.headers["authorization"] = token;
 
     res.status(200).json({
       ok: true,

@@ -11,6 +11,7 @@ module.exports = async (Sequelize, sequelize) => {
     },
     ip_address: {
       type: Sequelize.DataTypes.INET,
+      allowNull: false,
     },
   });
 };

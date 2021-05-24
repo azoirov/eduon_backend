@@ -30,62 +30,81 @@ async function main() {
     db.courses = await CourseModel(Sequelize, sequelize);
     db.lessons = await LessonModel(Sequelize, sequelize);
     db.sessions = await SessionsModel(Sequelize, sequelize);
-
     // References
 
-    db.users.hasMany(db.sessions, {
-      foreign_key: "user_id",
-      allowNull: false,
+    await db.users.hasMany(db.sessions, {
+      foreignKey: {
+        name: "user_id",
+        allowNull: false,
+      },
     });
 
-    db.sessions.belongsTo(db.users, {
-      foreign_key: "user_id",
-      allowNull: false,
+    await db.sessions.belongsTo(db.users, {
+      foreignKey: {
+        name: "user_id",
+        allowNull: false,
+      },
     });
 
-    db.users.hasMany(db.comments, {
-      foreign_key: "user_id",
-      allowNull: false,
+    await db.users.hasMany(db.comments, {
+      foreignKey: {
+        name: "user_id",
+        allowNull: false,
+      },
     });
 
-    db.comments.belongsTo(db.users, {
-      foreign_key: "user_id",
-      allowNull: false,
+    await db.comments.belongsTo(db.users, {
+      foreignKey: {
+        name: "user_id",
+        allowNull: false,
+      },
     });
 
-    db.users.hasMany(db.courses, {
-      foreign_key: "user_id",
-      allowNull: false,
+    await db.users.hasMany(db.courses, {
+      foreignKey: {
+        name: "user_id",
+        allowNull: false,
+      },
     });
 
-    db.courses.belongsTo(db.users, {
-      foreign_key: "user_id",
-      allowNull: false,
+    await db.courses.belongsTo(db.users, {
+      foreignKey: {
+        name: "user_id",
+        allowNull: false,
+      },
     });
 
-    db.categories.hasMany(db.courses, {
-      foreign_key: "category_id",
-      allowNull: false,
+    await db.categories.hasMany(db.courses, {
+      foreignKey: {
+        name: "category_id",
+        allowNull: false,
+      },
     });
 
-    db.courses.belongsTo(db.categories, {
-      foreign_key: "category_id",
-      allowNull: false,
+    await db.courses.belongsTo(db.categories, {
+      foreignKey: {
+        name: "category_id",
+        allowNull: false,
+      },
     });
 
-    db.courses.hasMany(db.lessons, {
-      foreign_key: "course_id",
-      allowNull: false,
+    await db.courses.hasMany(db.lessons, {
+      foreignKey: {
+        name: "course_id",
+        allowNull: false,
+      },
     });
 
-    db.lessons.belongsTo(db.courses, {
-      foreign_key: "course_id",
-      allowNull: false,
+    await db.lessons.belongsTo(db.courses, {
+      foreignKey: {
+        name: "course_id",
+        allowNull: false,
+      },
     });
 
     // Sync
 
-    sequelize.sync({ force: false });
+    // sequelize.sync({ force: true });
 
     return db;
   } catch (e) {

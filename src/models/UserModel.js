@@ -21,5 +21,9 @@ module.exports = async (Sequelize, sequelize) => {
       type: Sequelize.DataTypes.STRING(64),
       allowNull: false,
     },
+    avatar: {
+      type: Sequelize.DataTypes.STRING(64),
+      allowNull: false,
+    },
   });
 };
